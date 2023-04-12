@@ -9,9 +9,11 @@ db = mysql.connector.connect(
 )
 mycursor = db.cursor()
 
+#called for once to create our db and table
 
-# mycursor.execute("CREATE DATABASE mydatabase")
-# mycursor.execute("CREATE TABLE classes (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), start_time VARCHAR(255),end_time VARCHAR(255),date VARCHAR(100))")
+def db_initialize():
+    mycursor.execute("CREATE DATABASE mydatabase")
+    mycursor.execute("CREATE TABLE classes (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), start_time VARCHAR(255),end_time VARCHAR(255),date VARCHAR(100))")
 
 # structure of each element in our db: Class, Date, start time, end time.
 # currently, input has to be in the format: mm/dd/yyyy h:m:second format
@@ -105,7 +107,8 @@ def entries():
         i=i+1
 
 def main():
-    option = input("press 1 for start, 2 for stop, 3 for report, 4 for entry, p for print, q for quit\n")
+    option = input("press 1 for start, 2 for stop, 3 for report, 4 for entry, p for print, d for delete data,"
+                   " q for quit\n")
     while option != "q":
         if option == "1":
             time_start()
