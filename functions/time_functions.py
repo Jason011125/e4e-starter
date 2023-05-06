@@ -11,15 +11,14 @@ def time_start():
             print("need to end session before inserting a new one")
             return
     if start_time:
-        start_time_insert = datetime.strptime(start_time, "%m/%d/%Y %H:%M:%S")
+        start_time_insert = datetime.strptime(start_time, "%%Y-%m-%d %H:%M:%S")
         date = datetime.strftime(start_time_insert, "%m/%d %Y")
     else:
         date = datetime.strftime(datetime.today(), "%m/%d %Y")
-        chopped_time = datetime.today().strftime('%Y-%m-%d %H:%M:%S.%f')
-        start_time_insert = chopped_time[:-7]
+        chopped_time = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
     sql = "INSERT INTO classes (start_time, date) VALUES(%s,%s)"
-    val = (start_time_insert, date)
+    val = (chopped_time, date)
     mycursor.execute(sql, val)
     db.commit()
 
@@ -40,9 +39,10 @@ def time_stop():
         start_time_obj = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
 
         if end_time:
-            end_time_obj = datetime.strptime(end_time, "%m/%d/%Y %H:%M:%S")
+            end_time_obj = datetime.strptime(end_time, "%Y-%m-%d %H:%M:%S")
         else:
-            end_time_obj = datetime.now()
+            chopped_time = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
+            end_time_obj = datetime.strptime(chopped_time, "%Y-%m-%d %H:%M:%S")
         if start_time_obj > end_time_obj:
             print("start time is later than end time, check your inputs")
             return
@@ -68,7 +68,7 @@ def report():
         end_time = datetime.strptime(x[3], '%Y-%m-%d %H:%M:%S')
         class_name = x[1]
         elapsed_time = end_time - start_time
-        print("Class name: ", class_name, "elapsed time: ", elapsed_time)
+        print(f"Class name: {class_name}, elapsed time:{elapsed_time}")
 
 
 def entries():
